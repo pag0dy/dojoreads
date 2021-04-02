@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="container">
+    <header>
+        <h3 class="display-3">{{ book.title }}</h3>
+        <h5 class="display-4">Autor: {{ book.author.author_name }} {{ book.author.author_lastname }}</h5>
+    </header>
+    <div class="d-flex">
+        <div class="row">
+            <div class="col">
+                <h3>Reviews:</h3>
+                {% for review in book.reviews.all %}
+                <ul class="list-group-flush w-50">
+                    <p class="lead">Rating: {{ review.rating }} estrellas</p>
+                    <li class="list-group-item"><a href="../user/{{ review.user.id }}">{{ review.user.alias }} </a> dijo: {{ review.content }}</li>
+                    <p class="font-italic">Posteado el {{ review.created_at|date:"SHORT_DATETIME_FORMAT" }}</p> 
+                    {% if review.user.id == este_usuario.id %}
+                    <form action="../review/eliminar_review" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="review_id" value="{{ review.id }}">
+                        <button class="btn btn-danger" type="submit">Eliminar review</button>
+                    </form>
+                    {% endif %}
+                </ul>      
+                {% endfor %}
+            </div>
+            <div class="col">
+                <form action="../review/agregar_review" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="review">Agrega un review:</label>
+                        <textarea name="review" id="add_review" rows="3" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">Rating:</label>
+                        <input class="form-control" type="number" name="rating" min="0" max="5" id="add_rating">
+                    </div>  
+                    <input type="hidden" name="book_id" value="{{ book.id }}">
+                    <button class="btn btn-success" type="submit">Agregar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

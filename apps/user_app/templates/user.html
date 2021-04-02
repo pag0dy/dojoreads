@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="container">
+    <header>
+        <h3 class="display-3">Alias del usuario {{ usuario.alias }}</h3>
+    </header>
+        <div class="col w-75">
+                <p class="lead">Nombre: {{ usuario.name}} {{ usuario.last_name }}</p>
+                <p class="lead">Email: {{ usuario.email }}</p>
+                <p class="lead">Total de reviews: {{ usuario.reviews.count }}</p>
+            <h3>Ha posteado reviews para los siguientes libros:</h3>
+            <ul>
+                {% for review in usuario.reviews.all %}
+                <li><a href="../books/{{ review.book.id }}">{{ review.book.title }}</a></li>                 
+                {% endfor %}
+            </ul>
+        </div>
+</main>
+{% endblock %}

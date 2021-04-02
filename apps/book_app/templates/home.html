@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="container">
+    <header>
+        <h3 class="display-3">Bienvenido {{ este_usuario.alias }}</h3>
+    </header>
+    <div class="row">
+        <div class="col w-50">
+            <h3>Reviews recientes</h3>
+            <ul class="list-group-flush">
+                {% for review in reviews %}
+                <li class="list-group-item"><a class="titulo text-capitalize" href="../books/{{ review.book.id }}">{{ review.book.title }}</a></li>
+                    <p class="font-weight-bold">Rating:{{ review.rating }}</p>
+                    <p class="lead font-italic font-weight-bold"><a href="../user/{{ review.user.id }}">{{ review.user.alias }} </a>dijo: </p>
+                    <p class="lead">{{ review.content }}</p>
+                    <p class="font-italic">Review publicada el {{ review.created_at|date:"SHORT_DATETIME_FORMAT" }}</p>          
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col w-50">
+            <h3>Otros libros con reviews:</h3>
+            <ul></ul>
+                {% for book in books %}
+                <li><a href="../books/{{ book.id }}">{{ book.title }}</a></li>                 
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</main>
+{% endblock %}
